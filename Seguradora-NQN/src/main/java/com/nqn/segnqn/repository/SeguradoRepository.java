@@ -4,4 +4,7 @@ import com.nqn.segnqn.model.Segurado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SeguradoRepository extends JpaRepository<Segurado, Long> {
+
+    Segurado findByCpf(String cpf);
+
 }
