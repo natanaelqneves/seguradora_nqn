@@ -1,5 +1,6 @@
 package com.nqn.segnqn.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Segurado {
     @Column(nullable = false, length = 100)
     private String email;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "segurado", cascade = CascadeType.ALL)
     private List<Apolice> apolices = new ArrayList<>();
 

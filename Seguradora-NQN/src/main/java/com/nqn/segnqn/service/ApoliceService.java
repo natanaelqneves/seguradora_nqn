@@ -21,7 +21,7 @@ public class ApoliceService {
 
     public Apolice emitirApolice(ApoliceRequestDTO dto){
 
-        if(dto.inicioVigencia().isAfter(dto.FimVigencia())){
+        if(dto.inicioVigencia().isAfter(dto.fimVigencia())){
             throw  new IllegalArgumentException("A data início de vigência não pode ser posterior data de término.");
         }
 
@@ -29,7 +29,7 @@ public class ApoliceService {
             throw  new IllegalArgumentException("O valor da cobertura deve ser maior do que o valor do prêmio cobrado.");
         }
 
-        if(apoliceRepository.findNumeroApolice(dto.numeroApolice()).isPresent()) {
+        if(apoliceRepository.findByNumeroApolice(dto.numeroApolice()).isPresent()) {
             throw new IllegalArgumentException("Já existe uma apólice emitida com este número.");
         }
 
@@ -41,7 +41,7 @@ public class ApoliceService {
                 dto.valorPremio(),
                 dto.valorCobertura(),
                 dto.inicioVigencia(),
-                dto.FimVigencia(),
+                dto.fimVigencia(),
                 segurado
         );
 

@@ -1,5 +1,6 @@
 package com.nqn.segnqn.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -33,6 +34,7 @@ public class Apolice {
     @Column(name = "fim_vigencia", columnDefinition = "DATE")
     private LocalDate fimVigencia;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "segurado_id", nullable = false)
     private Segurado segurado;

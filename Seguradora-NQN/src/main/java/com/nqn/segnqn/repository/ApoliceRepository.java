@@ -6,6 +6,6 @@ import java.util.Optional;
 
 public interface ApoliceRepository extends JpaRepository<Apolice, Long> {
 
-    Optional<Apolice> findNumeroApolice(String numeroApolice);
+    Optional<Apolice> findByNumeroApolice(String numeroApolice);
 
 }

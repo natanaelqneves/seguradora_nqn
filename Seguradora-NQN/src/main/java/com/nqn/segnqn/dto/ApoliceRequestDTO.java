@@ -29,7 +29,7 @@ public record ApoliceRequestDTO(
 
         @NotNull(message = "A data de fim de vigência é obrigatória.")
         @JsonFormat(pattern = "dd/MM/yyyy")
-        LocalDate FimVigencia,
+        LocalDate fimVigencia,
 
         @NotNull(message = "O ID do segurado é obrigatório.")
         Long seguradoId
