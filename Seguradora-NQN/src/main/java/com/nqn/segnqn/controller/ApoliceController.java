@@ -1,6 +1,7 @@
 package com.nqn.segnqn.controller;
 
 import com.nqn.segnqn.dto.ApoliceRequestDTO;
+import com.nqn.segnqn.dto.ApoliceResponseDTO;
 import com.nqn.segnqn.model.Apolice;
 import com.nqn.segnqn.service.ApoliceService;
 import jakarta.validation.Valid;
@@ -21,16 +22,14 @@ public class ApoliceController {
     }
 
     @PostMapping
-    ResponseEntity<Apolice> emitirApolice(@RequestBody @Valid ApoliceRequestDTO dto){
-        Apolice novaApolice = apoliceService.emitirApolice(dto);
-
+    public ResponseEntity<ApoliceResponseDTO> emitirApolice(@RequestBody @Valid ApoliceRequestDTO dto) {
+        ApoliceResponseDTO novaApolice = apoliceService.emitirApolice(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaApolice);
     }
 
     @GetMapping
-    public ResponseEntity<List<Apolice>> listarApolices(){
-        List<Apolice> apolices = apoliceService.listarApolices();
-
+    public ResponseEntity<List<ApoliceResponseDTO>> listarTodas() {
+        List<ApoliceResponseDTO> apolices = apoliceService.listarApolices();
         return ResponseEntity.ok(apolices);
     }
 }

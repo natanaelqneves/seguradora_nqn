@@ -1,11 +1,13 @@
 package com.nqn.segnqn.service;
 
 import com.nqn.segnqn.dto.SeguradoRequestDTO;
+import com.nqn.segnqn.dto.SeguradoResponseDTO;
 import com.nqn.segnqn.model.Segurado;
 import com.nqn.segnqn.repository.SeguradoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,8 +20,8 @@ public class SeguradoService {
     }
 
     @Transactional
-    public Segurado cadastrar(SeguradoRequestDTO dto){
-        //NÃO TINHA O ISPRESENT ENTÃO USEI O DIFERENTE DE NULL
+    public SeguradoResponseDTO cadastrar(SeguradoRequestDTO dto){
+
         if(seguradoRepository.findByCpf(dto.cpf()).isPresent()){
             throw new IllegalArgumentException("Já existe um segurado cadastrado com este CPF.");
         }
@@ -29,15 +31,42 @@ public class SeguradoService {
         segurado.setCpf(dto.cpf());
         segurado.setEmail(dto.email());
 
-        return seguradoRepository.save(segurado);
+        Segurado salvo = seguradoRepository.save(segurado);
+
+        return new SeguradoResponseDTO(salvo.getNome(), salvo.getCpf(), salvo.getEmail());
     }
 
-    public List<Segurado> listarSegurados(){
-        return seguradoRepository.findAll();
+    public List<SeguradoResponseDTO> listarSegurados(){
+        List<SeguradoResponseDTO> lista = new ArrayList<>();
+        seguradoRepository.findAll().forEach(seg -> lista.add(new SeguradoResponseDTO(seg.getNome(), seg.getCpf(), seg.getEmail())));
+
+        return lista;
     }
 
     public Segurado buscarPorId(Long id){
         return seguradoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Seguro não encontrado."));
+    }
+
+    @Transactional
+    public SeguradoResponseDTO atualizar(Long id, SeguradoRequestDTO dto){
+        Segurado seguradoExistente = buscarPorId(id);
+
+        if(!seguradoExistente.getCpf().equals(dto.cpf()) && seguradoRepository.findByCpf(dto.cpf()).isPresent()) {
+    throw new IllegalArgumentException("O novo CPF já está sendo utilizado.");
+        }
+
+        seguradoExistente.setNome(dto.nome());
+        seguradoExistente.setCpf(dto.cpf());
+        seguradoExistente.setEmail(dto.email());
+        seguradoRepository.save(seguradoExistente);
+
+        return new SeguradoResponseDTO(seguradoExistente.getNome(), seguradoExistente.getCpf(), seguradoExistente.getEmail());
+    }
+
+    @Transactional
+    public void deletar(Long id){
+        Segurado segurado = buscarPorId(id);
+        seguradoRepository.delete(segurado);
     }
 }
