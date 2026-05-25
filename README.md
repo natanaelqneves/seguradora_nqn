@@ -59,12 +59,12 @@ A estabilidade do core do sistema é garantida por uma suíte de **Testes Unitá
 
 [100% VERDE - 5/5 testes executados com sucesso]
 │
-├── 🎯 ApoliceServiceTest
-│   ├── ✅ Deve barrar a emissão se a cobertura for menor ou igual ao prêmio cobrado. (Precisão Financeira)
-│   ├── ✅ Deve emitir uma apólice com sucesso sob condições válidas. (Fluxo Principal)
-│   └── ✅ Deve barrar a emissão se a data de início for posterior ao fim de vigência. (Consistência Temporal)
-│
-└── 🎯 SeguradoServiceTest
+ApoliceServiceTest
+├── ✅ Deve barrar a emissão se a cobertura for menor ou igual ao prêmio cobrado. (Precisão Financeira)
+├── ✅ Deve emitir uma apólice com sucesso sob condições válidas. (Fluxo Principal)
+└── ✅ Deve barrar a emissão se a data de início for posterior ao fim de vigência. (Consistência Temporal)
+
+SeguradoServiceTest
 ├── ✅ Deve cadastrar um segurado com sucesso quando o CPF for inédito.
 └── ✅ Deve lançar exceção ao tentar cadastrar segurado com CPF duplicado. (Unicidade)
 
