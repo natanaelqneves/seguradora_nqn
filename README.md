@@ -17,14 +17,15 @@ A aplicação gerencia o ciclo de vida de clientes (Segurados) e a emissão de c
 O projeto adota uma infraestrutura moderna onde a persistência de dados foi isolada em um contêiner Docker rodando a versão estável do Microsoft SQL Server 2022.
 
 [ Camada Web: Controllers ]
-          │ (Transfere dados via DTOs Imutáveis)
-          ▼
-[ Camada de Negócio: Services ] <─── Validações Defensivas (Regras de Negócio)
-          │ (Manipula Entidades JPA)
-          ▼
+* (Transfere dados via DTOs Imutáveis)
+ 
+[ Camada de Negócio: Services ]
+* Validações Defensivas (Regras de Negócio)
+* * (Manipula Entidades JPA)
+
 [ Camada de Persistência: Repositories ]
-          │ (Mapeamento ORM / Queries)
-          ▼
+* (Mapeamento ORM / Queries)
+
 [ Banco de Dados: SQL Server ]
 
 ### 1. Camada de Apresentação (`Controller`)
