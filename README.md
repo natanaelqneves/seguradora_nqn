@@ -1,4 +1,4 @@
-# 🛡️ Seguradora-NQN
+# Seguradora-NQN
 
 [![Java](https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=java)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?style=for-the-badge&logo=spring-boot)](https://spring.io/projects/spring-boot)
@@ -12,7 +12,7 @@ A aplicação gerencia o ciclo de vida de clientes (Segurados) e a emissão de c
 
 ---
 
-## 🏗️ Arquitetura do Sistema e Infraestrutura
+## Arquitetura do Sistema e Infraestrutura
 
 O projeto adota uma infraestrutura moderna onde a persistência de dados foi isolada em um contêiner Docker rodando a versão estável do Microsoft SQL Server 2022.
 
@@ -41,19 +41,19 @@ O banco de dados é inicializado de forma isolada e resiliente. O arquivo `docke
 
 ---
 
-## 🎯 Regras de Negócio e Validações Críticas
+## Regras de Negócio e Validações Críticas
 
-### 👥 Domínio de Segurados
+### Domínio de Segurados
 * **Unicidade de Registro:** Validação estrita na base de dados antes de persistir um novo segurado, impedindo o cadastro de CPFs duplicados.
 
-### 📄 Domínio de Apólices
+### Domínio de Apólices
 * **Vínculo Obrigatório:** Uma apólice só pode ser emitida se estiver associada a um segurado válido e previamente cadastrado.
 * **Consistência Cronológica:** Motor de regras temporal que impede a gravação de contratos cujo início de vigência seja posterior à data de término.
 * **Precisão Financeira (`BigDecimal`):** Todos os cálculos de Prêmio e Cobertura utilizam `BigDecimal` e validações estritas via `.compareTo()`. O sistema barra contratos onde o valor da cobertura seja menor ou igual ao prêmio cobrado.
 
 ---
 
-## 🧪 Estratégia de Testes Automatizados
+## Estratégia de Testes Automatizados
 
 A estabilidade do core do sistema é garantida por uma suíte de **Testes Unitários de Alta Velocidade** implementada com **JUnit 5** e **Mockito**. O foco foi o isolamento completo da lógica de negócio, eliminando a dependência de infraestrutura externa (Mocks).
 
@@ -71,12 +71,12 @@ SeguradoServiceTest
 
 ---
 
-## 🛠️ Configuração do Ambiente e Arquivos Base
+## Configuração do Ambiente e Arquivos Base
 
 O projeto utiliza injeção dinâmica de propriedades. A senha e as credenciais do banco de dados podem ser definidas através de variáveis de ambiente do sistema operacional para manter a segurança das credenciais, possuindo valores padrão para o ambiente de desenvolvimento local.
 
-### 🐳 1. Docker Compose (`docker-compose.yml`)
-```yml
+1. Docker Compose (`docker-compose.yml`)
+```
 version: '3.8'
 
 services:
@@ -95,7 +95,7 @@ services:
 volumes:
   mssql_seguros_data:
 ```
-###📝 2. Propriedades do Spring (application.properties)
+2. Propriedades do Spring (`application.properties`)
 ```
 spring.application.name=Seguradora-NQN
 
@@ -117,7 +117,7 @@ spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect
 spring.jpa.properties.hibernate.javax.persistence.schema-generation.create-database-schemas=true
 ```
 
-🚀 Como Executar o Projeto
+Como Executar o Projeto
 Clonar o Repositório:
 
 Bash
@@ -142,4 +142,6 @@ Bash
 Executar a Suíte de Testes Unitários:
 
 Bash
+```
 ./mvnw test
+```
