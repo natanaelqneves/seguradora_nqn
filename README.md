@@ -58,15 +58,15 @@ O banco de dados é inicializado de forma isolada e resiliente. O arquivo `docke
 A estabilidade do core do sistema é garantida por uma suíte de **Testes Unitários de Alta Velocidade** implementada com **JUnit 5** e **Mockito**. O foco foi o isolamento completo da lógica de negócio, eliminando a dependência de infraestrutura externa (Mocks).
 
 [100% VERDE - 5/5 testes executados com sucesso]
-│
+
 ApoliceServiceTest
-├── ✅ Deve barrar a emissão se a cobertura for menor ou igual ao prêmio cobrado. (Precisão Financeira)
-├── ✅ Deve emitir uma apólice com sucesso sob condições válidas. (Fluxo Principal)
-└── ✅ Deve barrar a emissão se a data de início for posterior ao fim de vigência. (Consistência Temporal)
+✅ Deve barrar a emissão se a cobertura for menor ou igual ao prêmio cobrado. (Precisão Financeira)
+✅ Deve emitir uma apólice com sucesso sob condições válidas. (Fluxo Principal)
+✅ Deve barrar a emissão se a data de início for posterior ao fim de vigência. (Consistência Temporal)
 
 SeguradoServiceTest
-├── ✅ Deve cadastrar um segurado com sucesso quando o CPF for inédito.
-└── ✅ Deve lançar exceção ao tentar cadastrar segurado com CPF duplicado. (Unicidade)
+✅ Deve cadastrar um segurado com sucesso quando o CPF for inédito.
+✅ Deve lançar exceção ao tentar cadastrar segurado com CPF duplicado. (Unicidade)
 
 
 ---
