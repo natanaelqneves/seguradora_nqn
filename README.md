@@ -76,7 +76,7 @@ SeguradoServiceTest
 O projeto utiliza injeção dinâmica de propriedades. A senha e as credenciais do banco de dados podem ser definidas através de variáveis de ambiente do sistema operacional para manter a segurança das credenciais, possuindo valores padrão para o ambiente de desenvolvimento local.
 
 ### 🐳 1. Docker Compose (`docker-compose.yml`)
-```yaml
+```yml
 version: '3.8'
 
 services:
@@ -94,8 +94,9 @@ services:
 
 volumes:
   mssql_seguros_data:
-📝 2. Propriedades do Spring (application.properties)
-Properties
+```
+###📝 2. Propriedades do Spring (application.properties)
+```
 spring.application.name=Seguradora-NQN
 
 # URL de Conexão com Fallback Dinâmico
@@ -114,21 +115,30 @@ spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect
 
 # Inicialização automática do catálogo/schema caso ele não exista no SQL Server
 spring.jpa.properties.hibernate.javax.persistence.schema-generation.create-database-schemas=true
+```
+
 🚀 Como Executar o Projeto
 Clonar o Repositório:
 
 Bash
+```
 git clone [https://github.com/seu-usuario/Seguradora-NQN.git](https://github.com/seu-usuario/Seguradora-NQN.git)
 cd Seguradora-NQN
+```
+
 Subir a Infraestrutura de Banco de Dados (Docker):
 Execute o comando para provisionar o container do SQL Server 2022 em segundo plano:
 
 Bash
+```
 docker-compose up -d
+```
 Compilar e Executar a API Spring Boot:
 
 Bash
+```
 ./mvnw spring-boot:run
+```
 Executar a Suíte de Testes Unitários:
 
 Bash
