@@ -3,6 +3,7 @@ package com.nqn.segnqn.service;
 import com.nqn.segnqn.dto.ApoliceRequestDTO;
 import com.nqn.segnqn.dto.ApoliceResponseDTO;
 import com.nqn.segnqn.model.Apolice;
+import com.nqn.segnqn.model.Corretor;
 import com.nqn.segnqn.model.Segurado;
 import com.nqn.segnqn.repository.ApoliceRepository;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,12 @@ public class ApoliceService {
 
     private final ApoliceRepository apoliceRepository;
     private final SeguradoService seguradoService;
+    private final CorretorService corretorService;
 
-    public ApoliceService(ApoliceRepository apoliceRepository, SeguradoService seguradoService) {
+    public ApoliceService(ApoliceRepository apoliceRepository, SeguradoService seguradoService, CorretorService corretorService) {
         this.apoliceRepository = apoliceRepository;
         this.seguradoService = seguradoService;
+        this.corretorService = corretorService;
     }
 
     public ApoliceResponseDTO emitirApolice(ApoliceRequestDTO dto){
@@ -36,6 +39,7 @@ public class ApoliceService {
         }
 
         Segurado segurado = seguradoService.buscarPorId(dto.seguradoId());
+        Corretor corretor = corretorService.buscarPorId(dto.corretorId());
 
         Apolice apolice = new Apolice(
                 null,
@@ -44,7 +48,8 @@ public class ApoliceService {
                 dto.valorCobertura(),
                 dto.inicioVigencia(),
                 dto.fimVigencia(),
-                segurado
+                segurado,
+                corretor
         );
 
         Apolice salva = apoliceRepository.save(apolice);
@@ -55,7 +60,9 @@ public class ApoliceService {
                 salva.getInicioVigencia(),
                 salva.getFimVigencia(),
                 salva.getSegurado().getNome(),
-                salva.getSegurado().getCpf()
+                salva.getSegurado().getCpf(),
+                salva.getCorretor().getNome(),
+                salva.getCorretor().getSusep()
         );
     }
 
@@ -68,7 +75,9 @@ public class ApoliceService {
                 ap.getInicioVigencia(),
                 ap.getFimVigencia(),
                 ap.getSegurado().getNome(),
-                ap.getSegurado().getCpf()
+                ap.getSegurado().getCpf(),
+                ap.getCorretor().getNome(),
+                ap.getCorretor().getSusep()
         )));
 
         return lista;

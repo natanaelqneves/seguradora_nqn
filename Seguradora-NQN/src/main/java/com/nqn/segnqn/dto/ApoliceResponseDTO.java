@@ -9,6 +9,8 @@ public record ApoliceResponseDTO(String numeroApolice,
                                  LocalDate inicioVigencia,
                                  LocalDate fimVigencia,
                                  String nomeSegurado,
-                                 String cpfSegurado
+                                 String cpfSegurado,
+                                 String nomeCorretor,
+                                 String corretorSusep
 ) {
 }

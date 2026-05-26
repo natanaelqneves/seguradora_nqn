@@ -53,7 +53,7 @@ public class SeguradoService {
         Segurado seguradoExistente = buscarPorId(id);
 
         if(!seguradoExistente.getCpf().equals(dto.cpf()) && seguradoRepository.findByCpf(dto.cpf()).isPresent()) {
-    throw new IllegalArgumentException("O novo CPF já está sendo utilizado.");
+    throw new IllegalArgumentException("O CPF já está sendo utilizado.");
         }
 
         seguradoExistente.setNome(dto.nome());

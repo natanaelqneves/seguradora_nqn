@@ -3,6 +3,7 @@ package com.nqn.segnqn.service;
 import com.nqn.segnqn.dto.ApoliceRequestDTO;
 import com.nqn.segnqn.dto.ApoliceResponseDTO;
 import com.nqn.segnqn.model.Apolice;
+import com.nqn.segnqn.model.Corretor;
 import com.nqn.segnqn.model.Segurado;
 import com.nqn.segnqn.repository.ApoliceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,13 +24,15 @@ class ApoliceServiceTest {
 
     private SeguradoService seguradoService;
     private ApoliceService apoliceService;
+    private CorretorService corretorService;
 
     @BeforeEach
     void setUp(){
         this.apoliceRepository = mock(ApoliceRepository.class);
         this.seguradoService = mock(SeguradoService.class);
+        this.corretorService = mock(CorretorService.class);
 
-        this.apoliceService = new ApoliceService(apoliceRepository, seguradoService);
+        this.apoliceService = new ApoliceService(apoliceRepository, seguradoService, corretorService);
     }
 
     @Test
@@ -37,6 +40,7 @@ class ApoliceServiceTest {
     void emitirApoliceComSucesso() {
 
         Segurado seguradoValido = new Segurado(7L, "Segurado Válido", "11122233344", "seguradovalido@email.com");
+        Corretor corretorValido = new Corretor(1L, "Corretor Válido", "12345678999");
 
         ApoliceRequestDTO request = new ApoliceRequestDTO(
                 "AP-2026-AUTO",
@@ -44,7 +48,8 @@ class ApoliceServiceTest {
                 new BigDecimal("50000.00"),
                 LocalDate.now(),
                 LocalDate.now().plusYears(1),
-                7L
+                7L,
+                1L
         );
 
         Apolice apoliceSalva = new Apolice(
@@ -54,7 +59,8 @@ class ApoliceServiceTest {
                 new BigDecimal("5000.00"),
                 LocalDate.now(),
                 LocalDate.now().plusYears(1),
-                seguradoValido
+                seguradoValido,
+                corretorValido
         );
 
         when(apoliceRepository.findByNumeroApolice("AP-2026-AUTO")).thenReturn(Optional.empty());
@@ -83,10 +89,12 @@ class ApoliceServiceTest {
                 new BigDecimal("50000.00"),
                 inicioInvalido,
                 fimInvalido,
+                1L,
                 1L
         );
 
         Segurado seguradoFake = new Segurado(12L, "Segurado Teste", "11122233344", "seguradoteste@email.com");
+        Corretor corretorFake = new Corretor(13L, "Corretor Teste", "12345678999");
         when(seguradoService.buscarPorId(12L)).thenReturn(seguradoFake);
         when(apoliceRepository.findByNumeroApolice("AP-2026-TESTE")).thenReturn(Optional.empty());
 
@@ -109,12 +117,15 @@ class ApoliceServiceTest {
                 new BigDecimal("1500.00"),
                 LocalDate.now(),
                 LocalDate.now().plusYears(1),
-                12L
+                12L,
+                13L
         );
 
         Segurado seguradoFake = new Segurado(12L, "Segurado Teste", "11122233344", "seguradoteste@email.com");
+        Corretor corretorFake = new Corretor(13L, "Corretor Teste", "12345678999");
 
         when(seguradoService.buscarPorId(12L)).thenReturn(seguradoFake);
+        when(corretorService.buscarPorId(13L)).thenReturn(corretorFake);
         when(apoliceRepository.findByNumeroApolice("AP-2026-TESTE")).thenReturn(Optional.empty());
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->{

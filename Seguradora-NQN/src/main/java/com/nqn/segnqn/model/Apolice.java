@@ -39,6 +39,10 @@ public class Apolice {
     @JoinColumn(name = "segurado_id", nullable = false)
     private Segurado segurado;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "corretor_id", nullable = true)
+    private Corretor corretor;
+
     @CreatedDate
     @Column(name = "data_emissao", nullable = false, updatable = false, columnDefinition = "DATETIME2")
     private LocalDateTime dataEmissao;
@@ -50,7 +54,7 @@ public class Apolice {
     public Apolice() {
     }
 
-    public Apolice(Long id, String numeroApolice, BigDecimal valorPremio, BigDecimal valorCobertura, LocalDate inicioVigencia, LocalDate fimVigencia, Segurado segurado) {
+    public Apolice(Long id, String numeroApolice, BigDecimal valorPremio, BigDecimal valorCobertura, LocalDate inicioVigencia, LocalDate fimVigencia, Segurado segurado, Corretor corretor) {
         this.id = id;
         this.numeroApolice = numeroApolice;
         this.valorPremio = valorPremio;
@@ -58,6 +62,7 @@ public class Apolice {
         this.inicioVigencia = inicioVigencia;
         this.fimVigencia = fimVigencia;
         this.segurado = segurado;
+        this.corretor = corretor;
     }
 
     public Long getId() {
@@ -114,6 +119,14 @@ public class Apolice {
 
     public void setSegurado(Segurado segurado) {
         this.segurado = segurado;
+    }
+
+    public Corretor getCorretor() {
+        return corretor;
+    }
+
+    public void setCorretor(Corretor corretor) {
+        this.corretor = corretor;
     }
 
     public LocalDateTime getDataEmissao() {

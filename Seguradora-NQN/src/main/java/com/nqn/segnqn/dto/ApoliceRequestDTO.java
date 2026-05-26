@@ -32,6 +32,9 @@ public record ApoliceRequestDTO(
         LocalDate fimVigencia,
 
         @NotNull(message = "O ID do segurado é obrigatório.")
-        Long seguradoId
+        Long seguradoId,
+
+        @NotNull(message = "O ID do corretor é obrigatório.")
+        Long corretorId
 ) {
 }
