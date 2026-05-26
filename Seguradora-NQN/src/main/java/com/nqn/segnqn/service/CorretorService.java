@@ -1,5 +1,7 @@
 package com.nqn.segnqn.service;
 
+import com.nqn.segnqn.dto.AutenticacaoDTO;
+import com.nqn.segnqn.dto.CorretorLogadoResponseDTO;
 import com.nqn.segnqn.dto.CorretorRequestDTO;
 import com.nqn.segnqn.dto.CorretorResponseDTO;
 import com.nqn.segnqn.model.Corretor;
@@ -30,6 +32,8 @@ public class CorretorService {
         Corretor corretor = new Corretor();
         corretor.setNome(dto.nome());
         corretor.setSusep(dto.susep());
+        corretor.setLogin(dto.login());
+        corretor.setSenha(dto.senha());
 
         Corretor salvo = corretorRepository.save(corretor);
 
