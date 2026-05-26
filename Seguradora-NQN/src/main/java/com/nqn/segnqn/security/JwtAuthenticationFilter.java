@@ -1,6 +1,6 @@
 package com.nqn.segnqn.security;
 
-import com.nqn.segnqn.repository.CorretorRepository;
+import com.nqn.segnqn.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,11 +18,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
 
-    private CorretorRepository corretorRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, CorretorRepository corretorRepository) {
+    public JwtAuthenticationFilter(JwtService jwtService, UsuarioRepository usuarioRepository) {
         this.jwtService = jwtService;
-        this.corretorRepository = corretorRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userName;
+        final String nomeDeUsuario;
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -41,16 +41,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        userName = jwtService.extrairLogin(jwt);
+        nomeDeUsuario = jwtService.extrairLogin(jwt);
 
-        if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var corretor = this.corretorRepository.findByUsuario(userName).orElse(null);
+        if(nomeDeUsuario != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var usuario = this.usuarioRepository.findByNomeDeUsuario(nomeDeUsuario).orElse(null);
 
-            if(corretor != null && jwtService.isTokenValido(jwt, corretor) && corretor.isEnabled()) {
+            if(usuario != null && jwtService.isTokenValido(jwt, usuario) && usuario.isEnabled()) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        corretor,
+                        usuario,
                         null,
-                        corretor.getAuthorities()
+                        usuario.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

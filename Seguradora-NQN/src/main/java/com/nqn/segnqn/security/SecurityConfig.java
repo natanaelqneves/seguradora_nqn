@@ -1,6 +1,7 @@
 package com.nqn.segnqn.security;
 
 import com.nqn.segnqn.repository.CorretorRepository;
+import com.nqn.segnqn.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,11 +25,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final CorretorRepository corretorRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CorretorRepository corretorRepository) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, UsuarioRepository usuarioRepository) {
         this.jwtAuthFilter = jwtAuthFilter;
-        this.corretorRepository = corretorRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Bean
@@ -39,7 +40,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/corretores").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/corretores/cadastro").permitAll()
 
                         // Qualquer outra requisição (Segurados, Apólices, etc.) exige autenticação
@@ -56,8 +56,8 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> corretorRepository.findByUsuario(username)
-                .orElseThrow(()-> new UsernameNotFoundException("Corretor não encontrado."));
+        return username -> usuarioRepository.findByNomeDeUsuario(username)
+                .orElseThrow(()-> new UsernameNotFoundException("Credenciais de acesso não encontradas."));
     }
 
     @Bean

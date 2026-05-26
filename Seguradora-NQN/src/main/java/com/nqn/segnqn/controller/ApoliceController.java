@@ -4,6 +4,7 @@ import com.nqn.segnqn.dto.ApoliceRequestDTO;
 import com.nqn.segnqn.dto.ApoliceResponseDTO;
 import com.nqn.segnqn.model.Apolice;
 import com.nqn.segnqn.model.Corretor;
+import com.nqn.segnqn.model.Usuario;
 import com.nqn.segnqn.service.ApoliceService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class ApoliceController {
     @PostMapping
     public ResponseEntity<ApoliceResponseDTO> emitirApolice(
             @RequestBody @Valid ApoliceRequestDTO dto,
-            @AuthenticationPrincipal Corretor corretorLogado) {
-        ApoliceResponseDTO novaApolice = apoliceService.emitirApolice(dto, corretorLogado);
+            @AuthenticationPrincipal Usuario usuarioLogado) {
+        ApoliceResponseDTO novaApolice = apoliceService.emitirApolice(dto, usuarioLogado);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaApolice);
     }
 

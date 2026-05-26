@@ -14,7 +14,7 @@ public record CorretorRequestDTO(
         String susep,
 
         @NotBlank(message = "O Login é obrigatório.")
-        @Size(message = "O login deve ter um formato válido.")
+        @Size(max = 100, message = "O login deve ter um formato válido.")
         String usuario,
 
         @NotBlank(message = "A senha é obrigatória.")

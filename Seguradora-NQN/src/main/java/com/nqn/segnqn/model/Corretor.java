@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_corretores")
-public class Corretor implements UserDetails {
+public class Corretor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,19 +22,12 @@ public class Corretor implements UserDetails {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true)
-    private String usuario;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String senha;
-
     @NotBlank
     @Column(nullable = false, unique = true)
     private String susep;
 
-    @Column(nullable = false)
-    private boolean ativo;
+    @OneToOne(mappedBy = "corretor")
+    private Usuario usuario;
 
     @OneToMany(mappedBy = "corretor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Apolice> apolices = new ArrayList<>();
@@ -42,13 +35,11 @@ public class Corretor implements UserDetails {
     public Corretor() {
     }
 
-    public Corretor(Long id, String nome, String usuario, String senha, String susep) {
+    public Corretor(Long id, String nome, String susep, Usuario usuario) {
         this.id = id;
         this.nome = nome;
-        this.usuario = usuario;
-        this.senha = senha;
         this.susep = susep;
-        this.ativo = false;
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -67,22 +58,6 @@ public class Corretor implements UserDetails {
         this.nome = nome;
     }
 
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public String getSusep() {
         return susep;
     }
@@ -91,54 +66,11 @@ public class Corretor implements UserDetails {
         this.susep = susep;
     }
 
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
-    }
-
     public List<Apolice> getApolices() {
         return apolices;
     }
 
     public void setApolices(List<Apolice> apolices) {
         this.apolices = apolices;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public @Nullable String getPassword() {
-        return this.senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.usuario;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

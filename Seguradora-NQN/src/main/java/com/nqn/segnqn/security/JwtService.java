@@ -1,6 +1,7 @@
 package com.nqn.segnqn.security;
 
 import com.nqn.segnqn.model.Corretor;
+import com.nqn.segnqn.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,10 +21,10 @@ public class JwtService {
     @Value("${api.security.token.secret}")
     private String secretKey;
 
-    public String gerarToken(Corretor corretor) {
+    public String gerarToken(Usuario usuario) {
         return Jwts.builder()
                 .setClaims(new HashMap<>())
-                .setSubject(corretor.getUsuario())
+                .setSubject(usuario.getNomeDeUsuario())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -34,9 +35,9 @@ public class JwtService {
         return extrairClaim(token, Claims::getSubject);
     }
 
-    public boolean isTokenValido(String token, Corretor corretor){
+    public boolean isTokenValido(String token, Usuario usuario){
         final String loginToken = extrairLogin(token);
-        return (loginToken.equals(corretor.getUsuario())) && !isTokenExpirado(token);
+        return (loginToken.equals(usuario.getNomeDeUsuario())) && !isTokenExpirado(token);
     }
 
     private boolean isTokenExpirado(String token) {

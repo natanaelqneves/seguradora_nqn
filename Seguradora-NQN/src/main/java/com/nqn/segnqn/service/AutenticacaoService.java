@@ -2,6 +2,7 @@ package com.nqn.segnqn.service;
 
 import com.nqn.segnqn.dto.AutenticacaoDTO;
 import com.nqn.segnqn.repository.CorretorRepository;
+import com.nqn.segnqn.repository.UsuarioRepository;
 import com.nqn.segnqn.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AutenticacaoService {
 
-    private CorretorRepository corretorRepository;
+    private UsuarioRepository usuarioRepository;
     private JwtService jwtService;
     private AuthenticationManager authenticationManager;
 
-    public AutenticacaoService(CorretorRepository corretorRepository, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.corretorRepository = corretorRepository;
+    public AutenticacaoService(UsuarioRepository usuarioRepository, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
@@ -32,9 +33,9 @@ public class AutenticacaoService {
             throw  new RuntimeException("Acesso pendente de liberação pelo Administrador/DBA");
         }
 
-        var corretor = corretorRepository.findByUsuario(dto.usuario())
+        var usuario = usuarioRepository.findByNomeDeUsuario(dto.usuario())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        return jwtService.gerarToken(corretor);
+        return jwtService.gerarToken(usuario);
     }
 }

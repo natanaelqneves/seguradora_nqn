@@ -5,6 +5,7 @@ import com.nqn.segnqn.dto.ApoliceResponseDTO;
 import com.nqn.segnqn.model.Apolice;
 import com.nqn.segnqn.model.Corretor;
 import com.nqn.segnqn.model.Segurado;
+import com.nqn.segnqn.model.Usuario;
 import com.nqn.segnqn.repository.ApoliceRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class ApoliceService {
         this.corretorService = corretorService;
     }
 
-    public ApoliceResponseDTO emitirApolice(ApoliceRequestDTO dto, Corretor corretorLogado){
+    public ApoliceResponseDTO emitirApolice(ApoliceRequestDTO dto, Usuario usuarioLogado){
 
         if(dto.inicioVigencia().isAfter(dto.fimVigencia())){
             throw  new IllegalArgumentException("A data início de vigência não pode ser posterior data de término.");
@@ -40,6 +41,8 @@ public class ApoliceService {
 
         Segurado segurado = seguradoService.buscarPorId(dto.seguradoId());
 
+        Corretor corretor = usuarioLogado.getCorretor();
+
 
         Apolice apolice = new Apolice(
                 null,
@@ -49,7 +52,7 @@ public class ApoliceService {
                 dto.inicioVigencia(),
                 dto.fimVigencia(),
                 segurado,
-                corretorLogado
+                corretor
         );
 
         Apolice salva = apoliceRepository.save(apolice);
