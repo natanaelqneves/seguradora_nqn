@@ -1,11 +1,10 @@
 package com.nqn.segnqn.service;
 
-import com.nqn.segnqn.dto.AutenticacaoDTO;
-import com.nqn.segnqn.dto.CorretorLogadoResponseDTO;
 import com.nqn.segnqn.dto.CorretorRequestDTO;
 import com.nqn.segnqn.dto.CorretorResponseDTO;
 import com.nqn.segnqn.model.Corretor;
 import com.nqn.segnqn.repository.CorretorRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +16,11 @@ import java.util.List;
 public class CorretorService {
 
     private final CorretorRepository corretorRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CorretorService(CorretorRepository corretorRepository) {
+    public CorretorService(CorretorRepository corretorRepository, PasswordEncoder passwordEncoder) {
         this.corretorRepository = corretorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -29,11 +30,17 @@ public class CorretorService {
             throw new IllegalArgumentException("Já existe um corretor cadastrado com este registro.");
         }
 
+        if(corretorRepository.findByUsuario(dto.usuario()).isPresent()){
+            throw new IllegalArgumentException("Já existe um corretor com este registro.");
+        }
+
+        String senhaCriptografada = passwordEncoder.encode(dto.senha());
+
         Corretor corretor = new Corretor();
         corretor.setNome(dto.nome());
         corretor.setSusep(dto.susep());
-        corretor.setLogin(dto.login());
-        corretor.setSenha(dto.senha());
+        corretor.setUsuario(dto.usuario());
+        corretor.setSenha(senhaCriptografada);
 
         Corretor salvo = corretorRepository.save(corretor);
 

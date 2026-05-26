@@ -23,7 +23,7 @@ public class CorretorController {
         this.corretorService = corretorService;
     }
 
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<CorretorResponseDTO> cadastrar(@RequestBody @Valid CorretorRequestDTO dto) {
         CorretorResponseDTO novoCorretor = corretorService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCorretor);

@@ -23,7 +23,7 @@ public class JwtService {
     public String gerarToken(Corretor corretor) {
         return Jwts.builder()
                 .setClaims(new HashMap<>())
-                .setSubject(corretor.getLogin())
+                .setSubject(corretor.getUsuario())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -36,7 +36,7 @@ public class JwtService {
 
     public boolean isTokenValido(String token, Corretor corretor){
         final String loginToken = extrairLogin(token);
-        return (loginToken.equals(corretor.getLogin())) && !isTokenExpirado(token);
+        return (loginToken.equals(corretor.getUsuario())) && !isTokenExpirado(token);
     }
 
     private boolean isTokenExpirado(String token) {

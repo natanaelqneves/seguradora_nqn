@@ -23,10 +23,10 @@ public class Corretor implements UserDetails {
     private String nome;
 
     @Column(nullable = false, unique = true)
-    private String login;
+    private String usuario;
 
     @NotBlank
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false)
     private String senha;
 
     @NotBlank
@@ -34,7 +34,7 @@ public class Corretor implements UserDetails {
     private String susep;
 
     @Column(nullable = false)
-    private boolean ativo = false;
+    private boolean ativo;
 
     @OneToMany(mappedBy = "corretor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Apolice> apolices = new ArrayList<>();
@@ -42,10 +42,13 @@ public class Corretor implements UserDetails {
     public Corretor() {
     }
 
-    public Corretor(Long id, String nome, String susep) {
+    public Corretor(Long id, String nome, String usuario, String senha, String susep) {
         this.id = id;
         this.nome = nome;
+        this.usuario = usuario;
+        this.senha = senha;
         this.susep = susep;
+        this.ativo = false;
     }
 
     public Long getId() {
@@ -64,12 +67,12 @@ public class Corretor implements UserDetails {
         this.nome = nome;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getSenha() {
@@ -116,7 +119,7 @@ public class Corretor implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.login;
+        return this.usuario;
     }
 
     @Override

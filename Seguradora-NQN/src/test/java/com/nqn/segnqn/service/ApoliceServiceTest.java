@@ -40,7 +40,7 @@ class ApoliceServiceTest {
     void emitirApoliceComSucesso() {
 
         Segurado seguradoValido = new Segurado(7L, "Segurado Válido", "11122233344", "seguradovalido@email.com");
-        Corretor corretorValido = new Corretor(1L, "Corretor Válido", "12345678999");
+        Corretor corretorValido = new Corretor(1L, "Corretor Válido", "correvalido", "123456", "11122255599");
 
         ApoliceRequestDTO request = new ApoliceRequestDTO(
                 "AP-2026-AUTO",
@@ -48,8 +48,8 @@ class ApoliceServiceTest {
                 new BigDecimal("50000.00"),
                 LocalDate.now(),
                 LocalDate.now().plusYears(1),
-                7L,
-                1L
+                7L
+
         );
 
         Apolice apoliceSalva = new Apolice(
@@ -67,7 +67,7 @@ class ApoliceServiceTest {
         when(seguradoService.buscarPorId(7L)).thenReturn(seguradoValido);
         when(apoliceRepository.save(any(Apolice.class))).thenReturn(apoliceSalva);
 
-        ApoliceResponseDTO response = apoliceService.emitirApolice(request);
+        ApoliceResponseDTO response = apoliceService.emitirApolice(request, corretorValido);
 
         assertNotNull(response);
         assertEquals("AP-2026-AUTO", response.numeroApolice());
@@ -89,17 +89,17 @@ class ApoliceServiceTest {
                 new BigDecimal("50000.00"),
                 inicioInvalido,
                 fimInvalido,
-                1L,
                 1L
+
         );
 
         Segurado seguradoFake = new Segurado(12L, "Segurado Teste", "11122233344", "seguradoteste@email.com");
-        Corretor corretorFake = new Corretor(13L, "Corretor Teste", "12345678999");
+        Corretor corretorFake = new Corretor(1L, "Corretor Fake", "correfake", "123456", "11122211599");
         when(seguradoService.buscarPorId(12L)).thenReturn(seguradoFake);
         when(apoliceRepository.findByNumeroApolice("AP-2026-TESTE")).thenReturn(Optional.empty());
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            apoliceService.emitirApolice(request);
+            apoliceService.emitirApolice(request, corretorFake);
         });
 
         assertEquals("A data início de vigência não pode ser posterior data de término.", exception.getMessage());
@@ -117,19 +117,18 @@ class ApoliceServiceTest {
                 new BigDecimal("1500.00"),
                 LocalDate.now(),
                 LocalDate.now().plusYears(1),
-                12L,
-                13L
+                12L
         );
 
         Segurado seguradoFake = new Segurado(12L, "Segurado Teste", "11122233344", "seguradoteste@email.com");
-        Corretor corretorFake = new Corretor(13L, "Corretor Teste", "12345678999");
+        Corretor corretorFake = new Corretor(13L, "Corretor Teste", "correteste", "123456", "11122259999");
 
         when(seguradoService.buscarPorId(12L)).thenReturn(seguradoFake);
         when(corretorService.buscarPorId(13L)).thenReturn(corretorFake);
         when(apoliceRepository.findByNumeroApolice("AP-2026-TESTE")).thenReturn(Optional.empty());
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->{
-            apoliceService.emitirApolice(request);
+            apoliceService.emitirApolice(request, corretorFake);
         });
 
         assertEquals("O valor da cobertura deve ser maior do que o valor do prêmio cobrado.", exception.getMessage());

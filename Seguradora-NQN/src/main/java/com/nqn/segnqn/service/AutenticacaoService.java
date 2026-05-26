@@ -25,14 +25,14 @@ public class AutenticacaoService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            dto.login(),
+                            dto.usuario(),
                             dto.senha())
             );
         } catch (DisabledException e) {
             throw  new RuntimeException("Acesso pendente de liberação pelo Administrador/DBA");
         }
 
-        var corretor = corretorRepository.findByLogin(dto.login())
+        var corretor = corretorRepository.findByUsuario(dto.usuario())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
         return jwtService.gerarToken(corretor);

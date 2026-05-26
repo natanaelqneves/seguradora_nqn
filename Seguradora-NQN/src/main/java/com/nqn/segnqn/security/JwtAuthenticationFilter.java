@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
@@ -31,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userLogin;
+        final String userName;
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -39,10 +41,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        userLogin = jwtService.extrairLogin(jwt);
+        userName = jwtService.extrairLogin(jwt);
 
-        if(userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var corretor = this.corretorRepository.findByLogin(userLogin).orElse(null);
+        if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var corretor = this.corretorRepository.findByUsuario(userName).orElse(null);
 
             if(corretor != null && jwtService.isTokenValido(jwt, corretor) && corretor.isEnabled()) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

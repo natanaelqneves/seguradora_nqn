@@ -9,5 +9,5 @@ public interface CorretorRepository extends JpaRepository<Corretor, Long> {
 
     Optional<Corretor> findBySusep(String susep);
 
-    Optional<Corretor> findByLogin(String login);
+    Optional<Corretor> findByUsuario(String login);
 }

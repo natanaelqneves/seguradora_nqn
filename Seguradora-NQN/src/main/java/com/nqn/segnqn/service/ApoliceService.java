@@ -24,7 +24,7 @@ public class ApoliceService {
         this.corretorService = corretorService;
     }
 
-    public ApoliceResponseDTO emitirApolice(ApoliceRequestDTO dto){
+    public ApoliceResponseDTO emitirApolice(ApoliceRequestDTO dto, Corretor corretorLogado){
 
         if(dto.inicioVigencia().isAfter(dto.fimVigencia())){
             throw  new IllegalArgumentException("A data início de vigência não pode ser posterior data de término.");
@@ -39,7 +39,7 @@ public class ApoliceService {
         }
 
         Segurado segurado = seguradoService.buscarPorId(dto.seguradoId());
-        Corretor corretor = corretorService.buscarPorId(dto.corretorId());
+
 
         Apolice apolice = new Apolice(
                 null,
@@ -49,7 +49,7 @@ public class ApoliceService {
                 dto.inicioVigencia(),
                 dto.fimVigencia(),
                 segurado,
-                corretor
+                corretorLogado
         );
 
         Apolice salva = apoliceRepository.save(apolice);
